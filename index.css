@@ -5,39 +5,67 @@ body
 	-webkit-user-select: none;
 }
 
-.title
+.topBox
 {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	background-color: #333;
+	position: fixed;
+	top: 0;
+	margin: 0;
+	width: 310;
+	left: 0;
+	height: 50;
 	-webkit-app-region: drag;
+}
+
+.topBox h1
+{
 	text-align: center;
 	font-family: "Futura", sans-serif;
 	color: #fff;
-	background-color: #333;
 }
 
-.bottomButton {
-	background-color:#44c767;
-	-moz-border-radius:10px;
-	-webkit-border-radius:10px;
-	border-radius:0px;
-	border:3px solid #18ab29;
+#clocks
+{
+	margin-top: 65px;
+}
+
+#clocks div
+{
+	background-color: #888;
+	display: flex;
+	margin: 15px;
+}
+
+.bottomButton
+{
+	background-color: #44c767;
+	-moz-border-radius: 10px;
+	-webkit-border-radius: 10px;
+	border-radius: 0px;
+	border: 3px solid #18ab29;
 	display:inline-block;
-	cursor:pointer;
-	color:#ffffff;
-	font-family:Verdana;
-	font-size:28px;
-	font-weight:bold;
-	padding:15px 15px;
-	text-decoration:none;
-	position:fixed;
-	bottom:-11;
-	right:-11;
+	cursor: pointer;
+	color: #ffffff;
+	font-family: Verdana;
+	font-size: 28px;
+	font-weight: bold;
+	padding: 15px 15px;
+	text-decoration: none;
+	position: fixed;
+	bottom: -11;
+	right: -11;
 }
 
-.bottomButton:hover {
-	background-color:#5cbf2a;
+.bottomButton:hover
+{
+	background-color: #5cbf2a;
 }
 
-.bottomButton:active {
-	background-color:#55d877;
+.bottomButton:active
+{
+	background-color: #55d877;
 }
 
