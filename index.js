@@ -1,9 +1,10 @@
-document.addEventListener("DOMContentLoaded", function(event)
-{
-	require('electron').webFrame.setZoomLevelLimits(1, 1)
+require('electron').webFrame.setZoomLevelLimits(1, 1);
+$ = require('jquery');
 
-	var ctx = document.getElementById("myChart");
-	require('chart.js')
+$(function()
+{
+	var ctx = $("#myChart");
+	require('chart.js');
 	
 	var myChart = new Chart(ctx,
 	{
@@ -40,4 +41,4 @@ document.addEventListener("DOMContentLoaded", function(event)
 			}
     	}
 	});
-})
+});
