@@ -41,4 +41,9 @@ $(function()
 			}
     	}
 	});
+
+	$('#addClock').on('click', function()
+	{
+		$('#clocks').append('<p style="color:#fff">Clicked the button</p>');
+	});
 });
