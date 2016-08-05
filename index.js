@@ -9,8 +9,7 @@ $(function()
 		$.get('section.html', function(data)
 		{
 			$('#clocks').append(data);
-
-			var ctx = $("#clocks").last().first();
+			var ctx = $('#clocks').children().last().children().first();
 			var newChart = new Chart(ctx,
 			{
 				type: 'doughnut',
@@ -47,7 +46,6 @@ $(function()
 					responsive: false
 				}
 			});
-
 		});
 	});
 });
