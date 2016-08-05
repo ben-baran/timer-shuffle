@@ -38,8 +38,9 @@ $(function()
 			tooltips:
 			{
 				enabled: false
-			}
-    	}
+			},
+			responsive: false
+		}
 	});
 
 	$('#addClock').on('click', function()
