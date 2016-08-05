@@ -1,0 +1,19 @@
+{
+  "name": "electron-timers",
+  "version": "0.0.1",
+  "description": "Runs timers all day to make your head explode.",
+  "main": "main.js",
+  "dependencies": {
+    "electron": "^1.3.2"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "start": "electron ."
+  },
+  "keywords": [
+    "timer",
+    "productivity"
+  ],
+  "author": "Ben B",
+  "license": "MIT"
+}

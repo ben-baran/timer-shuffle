@@ -1,0 +1,15 @@
+body
+{
+	background-color: #111;
+}
+
+.title
+{
+	cursor: default;
+	-webkit-app-region: drag;
+	-webkit-user-select: none;
+	text-align: center;
+	font-family: "Futura", sans-serif;
+	color: #fff;
+	background-color: #333;
+}
