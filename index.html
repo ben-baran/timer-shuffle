@@ -2,15 +2,23 @@
 	<head>
 		<meta charset="UTF-8">
     	<title>Timer Shuffle</title>
+		<link rel="stylesheet" type="text/css" href="semantic/dist/semantic.min.css">
 		<link rel="stylesheet" type="text/css" href="index.css">
 		<script src="index.js"></script>
+		<script src="semantic/dist/semantic.min.js"></script>
 	</head>
 	
 	<body>
-		<div class="topBox">
-			<h1>Timer Shuffle</h1>
+		<div class="ui segment fixed sticky topBox">
+			<h1 class="ui header">Timer Shuffle</h1>
 		</div>
 		<div id="clocks"></div>
-		<span class="bottomButton" id="addClock">+</span>
+		<div class="ui button">hey</div>
+		<div id="bottomGroup" class="ui action input">
+			<input type="text" placeholder="Add action">
+			<button class="ui olive icon button" id="addClock">
+				<i class="plus icon"></i>
+			</button>
+		</div>
 	</body>
 </html>

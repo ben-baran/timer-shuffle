@@ -1,6 +1,6 @@
 body
 {
-	background-color: #111;
+	/*background-color: #111;*/
 	cursor: default;
 	-webkit-user-select: none;
 }
@@ -10,11 +10,7 @@ body
 	display: flex;
 	justify-content: center;
 	align-items: center;
-	background-color: #333;
-	position: fixed;
-	top: 0;
-	margin: 0;
-	width: 310;
+	width: 100%;
 	left: 0;
 	height: 50;
 	-webkit-app-region: drag;
@@ -29,16 +25,17 @@ body
 
 #clocks
 {
-	margin-top: 65px;
+	top: 0px;
+	margin-top: 0px;
+	padding-top: 50px;
+	padding-bottom: 30px;
 }
 
 #clocks div
 {
-	background-color: #888;
 	display: flex;
-	margin: 15px;
-
 	align-items: center;
+	padding: 5px;
 }
 
 #clocks div *
@@ -46,33 +43,9 @@ body
 	margin: 5px;
 }
 
-.bottomButton
+#bottomGroup
 {
-	background-color: #44c767;
-	-moz-border-radius: 10px;
-	-webkit-border-radius: 10px;
-	border-radius: 0px;
-	border: 3px solid #18ab29;
-	display:inline-block;
-	cursor: pointer;
-	color: #ffffff;
-	font-family: Verdana;
-	font-size: 28px;
-	font-weight: bold;
-	padding: 15px 15px;
-	text-decoration: none;
 	position: fixed;
-	bottom: -11;
-	right: -11;
+	bottom: 0;
+	width: 100%;
 }
-
-.bottomButton:hover
-{
-	background-color: #5cbf2a;
-}
-
-.bottomButton:active
-{
-	background-color: #55d877;
-}
-
