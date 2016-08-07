@@ -5,8 +5,7 @@ class Search extends React.Component
 {
 	render()
 	{
-		return
-		(
+		return(
 			<form>
 				<input type="text" />
 				<input type="submit" />
@@ -15,4 +14,4 @@ class Search extends React.Component
 	}
 }
 
-ReactDOM.render(< Search / >, document.getElementByID('content'));
+ReactDOM.render(< Search / >, document.getElementById('content'));
