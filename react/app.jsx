@@ -68,8 +68,8 @@ var Clocks = React.createClass
 			<div>
 				<div id="clocks">{this.state.clocks.map(createClock)}</div>
 				<div id="bottomGroup" className="ui action input">
-					<input onChange={this.onInputChange} type="text" placeholder="Add action" />
-					<button className="ui olive icon button" id="addClock" onClick={this.handleClick}>
+					<input onKeyPress={this.checkEnterButton} onChange={this.onInputChange} type="text" placeholder="Add action" value={this.state.text}/>
+					<button className="ui olive icon button" id="addClock" onClick={this.createClock}>
 						<i className="plus icon" />
 					</button>
 				</div>
@@ -77,11 +77,19 @@ var Clocks = React.createClass
 		);
 	},
 
-	handleClick: function()
+	createClock: function()
 	{
 		var nextClocks = this.state.clocks.concat([{text: this.state.text}]);
 		var nextText = '';
 		this.setState({clocks: nextClocks, text: nextText});
+	},
+	
+	checkEnterButton: function(e)
+	{
+		if(e.key == 'Enter')
+		{
+			this.createClock();
+		}
 	},
 
 	onInputChange: function(e)
@@ -91,7 +99,7 @@ var Clocks = React.createClass
 
 	getInitialState: function()
 	{
-		return {clocks: [], text: ''};
+		return {clocks: [{text: 'Wasting Time'}], text: ''};
 	}
 });
 
