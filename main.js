@@ -22,12 +22,12 @@ function createWindow()
 
 	if(process.argv.indexOf('--dev') >= 0)
 	{
-		mainWindow = new BrowserWindow({width: 1200, height: 600, frame: false, alwaysOnTop: true, resizable: true, backgroundColor: '#111'})	
+		mainWindow = new BrowserWindow({width: 1200, height: 600, frame: false, alwaysOnTop: true, resizable: true})
 		mainWindow.webContents.openDevTools()
 	}
 	else
 	{
-		mainWindow = new BrowserWindow({width: 300, height: 600, frame: false, alwaysOnTop: true, resizable: false, backgroundColor: '#111'})
+		mainWindow = new BrowserWindow({width: 300, height: 600, frame: false, alwaysOnTop: true, resizable: false})
 	}
 
 	mainWindow.loadURL(`file://${__dirname}/pages/index.html`)
