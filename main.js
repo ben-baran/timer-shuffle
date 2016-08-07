@@ -5,15 +5,13 @@ const BrowserWindow = electron.BrowserWindow
 let mainWindow
 
 function createWindow()
-{
-	debug = false;
+{	
 	var mainWindow;
 
-	if(debug)
+	if(process.argv.indexOf('--dev') >= 0)
 	{
 		mainWindow = new BrowserWindow({width: 1200, height: 600, frame: false, alwaysOnTop: true, resizable: true, backgroundColor: '#111'})	
 		mainWindow.webContents.openDevTools()
-
 	}
 	else
 	{
@@ -21,7 +19,7 @@ function createWindow()
 	}
 
 	mainWindow.loadURL(`file://${__dirname}/pages/index.html`)
-	mainWindow.on('closed', function(){ mainWindow = null})
+	mainWindow.on('closed', function(){mainWindow = null})
 }
 
 app.on('ready', createWindow)

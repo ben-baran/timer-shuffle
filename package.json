@@ -7,12 +7,13 @@
     "chart.js": "^2.2.1",
     "electron": "^1.3.2",
     "jquery": "^3.1.0",
+    "react": "^15.3.0",
     "semantic-ui": "^2.2.2"
   },
   "devDependencies": {},
   "scripts": {
     "start": "electron .",
-    "dev": "node_modules/electron-prebuilt/cli.js ./ --dev"
+    "dev": "electron . --dev"
   },
   "keywords": [
     "timer",
