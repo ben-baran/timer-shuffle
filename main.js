@@ -6,10 +6,22 @@ let mainWindow
 
 function createWindow()
 {
-	mainWindow = new BrowserWindow({width: 310, height: 600, frame: false, alwaysOnTop: true, resizable: false, backgroundColor: '#111'})
+	debug = false;
+	var mainWindow;
+
+	if(debug)
+	{
+		mainWindow = new BrowserWindow({width: 1200, height: 600, frame: false, alwaysOnTop: true, resizable: true, backgroundColor: '#111'})	
+		mainWindow.webContents.openDevTools()
+
+	}
+	else
+	{
+		mainWindow = new BrowserWindow({width: 300, height: 600, frame: false, alwaysOnTop: true, resizable: false, backgroundColor: '#111'})
+	}
+
 	mainWindow.loadURL(`file://${__dirname}/index.html`)
 	mainWindow.on('closed', function(){ mainWindow = null})
-	//mainWindow.webContents.openDevTools()
 }
 
 app.on('ready', createWindow)
