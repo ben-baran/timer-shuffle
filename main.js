@@ -11,8 +11,6 @@ REACT_DEVELOPER_TOOLS = devtools.REACT_DEVELOPER_TOOLS;
 //import installExtension, { REACT_DEVELOPER_TOOLS } from 'electron-devtools-installer';
 
 devtools.default(REACT_DEVELOPER_TOOLS)
-    .then((name) => console.log(`Added Extension:  ${name}`))
-    .catch((err) => console.log('An error occurred when adding React developer tools: ', err));
 
 let mainWindow
 
