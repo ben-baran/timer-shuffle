@@ -66,6 +66,9 @@ var Clocks = React.createClass
 
 		return(
 			<div>
+				<div className="ui segment fixed sticky topBox">
+					<h1 className="ui header">Timer Shuffle {this.state.secondsToday}</h1>
+				</div>
 				<div id="clocks">{this.state.clocks.map(createClock)}</div>
 				<div id="bottomGroup" className="ui action input">
 					<input onKeyPress={this.checkEnterButton} onChange={this.onInputChange} type="text" placeholder="Add action" value={this.state.text}/>
@@ -99,7 +102,24 @@ var Clocks = React.createClass
 
 	getInitialState: function()
 	{
-		return {clocks: [{text: 'Wasting Time'}], text: ''};
+		return {clocks: [{text: 'Wasting Time'}], text: '', secondsToday: 0};
+	},
+
+	componentDidMount: function()
+	{
+		this.masterInterval = setInterval(this.tick, 10);
+	},
+
+	tick: function()
+	{
+		var d = new Date();
+		var currentSeconds = Math.round(d.getMilliseconds() / 1000.0 + d.getSeconds() + d.getMinutes() * 60 + d.getHours() * 3600);
+		this.setState({secondsToday: currentSeconds});
+	},
+	
+	componentWillUnmount: function()
+	{
+		clearInterval(this.masterInterval);
 	}
 });
 
