@@ -51,7 +51,9 @@ var Clock = React.createClass
 				},
 				responsive: false
 			}
-		});	
+		});
+		
+		$('#clocks').stop().animate({scrollTop: $('#clocks')[0].scrollHeight}, 500);
 	}
 });
 

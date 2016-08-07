@@ -8,8 +8,6 @@ require('electron-reload')(__dirname, {
 
 devtools = require('electron-devtools-installer');
 REACT_DEVELOPER_TOOLS = devtools.REACT_DEVELOPER_TOOLS;
-//import installExtension, { REACT_DEVELOPER_TOOLS } from 'electron-devtools-installer';
-
 devtools.default(REACT_DEVELOPER_TOOLS)
 
 let mainWindow
@@ -20,12 +18,12 @@ function createWindow()
 
 	if(process.argv.indexOf('--dev') >= 0)
 	{
-		mainWindow = new BrowserWindow({width: 1200, height: 600, frame: false, alwaysOnTop: true, resizable: true})
+		mainWindow = new BrowserWindow({width: 1200, height: 560, frame: false, alwaysOnTop: true, resizable: true})
 		mainWindow.webContents.openDevTools()
 	}
 	else
 	{
-		mainWindow = new BrowserWindow({width: 300, height: 600, frame: false, alwaysOnTop: true, resizable: false})
+		mainWindow = new BrowserWindow({width: 300, height: 560, frame: false, alwaysOnTop: true, resizable: false})
 	}
 
 	mainWindow.loadURL(`file://${__dirname}/pages/index.html`)

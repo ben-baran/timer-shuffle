@@ -29,6 +29,8 @@ body
 	margin-top: 0px;
 	padding-top: 65px;
 	padding-bottom: 50px;
+	overflow-y: scroll;
+	height: 100%;
 }
 
 #clocks div
