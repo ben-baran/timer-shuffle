@@ -17,15 +17,18 @@ var Clock = React.createClass
 		});
 		
 		var buttonClasses = classNames({
-			'ui icon button clockSettingsButton': true,
+			'ui icon button': true,
 			'inverted': this.props.active
 		});
 		return(
-			<div className={divClasses} onClick={this.props.makeActive}>
-				<canvas className="timeChart" width="50px" height="50px" />
+			<div className={divClasses}>
+				<canvas className="timeChart" width="50px" height="50px" onClick={this.props.makeActive}/>
 				<p className="clockText">00:00/30:00 <br /> {this.props.text}</p>
 				<button className={buttonClasses}>
   					<i className="settings icon"></i>
+				</button>
+				<button className={buttonClasses} onClick={this.props.removeClock}>
+  					<i className="delete icon"></i>
 				</button>
 			</div>
 		);
@@ -47,12 +50,12 @@ var Clock = React.createClass
 						backgroundColor:
 						[
 							"#FF6384",
-							"#36A2EB"
+							"#000000"
 						],
 						hoverBackgroundColor:
 						[
-							"#63FF84",
-							"#36A2EB"
+							"#52EE84",
+							"#000000"
 						]
 					}
 				]
@@ -81,7 +84,13 @@ var Clocks = React.createClass
 	{
 		var clockRender = function(item)
 		{
-			return <Clock key={item.key} active={this.state.currentActive == item.key} text={item.text} makeActive={this.makeClockActive.bind(null, item)}/>;
+			return <Clock
+						key={item.key}
+						active={this.state.currentActive == item.key}
+						text={item.text}
+						makeActive={this.makeClockActive.bind(null, item)}
+						removeClock={this.deleteClock.bind(null, item)}
+					/>;
 		};
 
 		return(
@@ -103,6 +112,16 @@ var Clocks = React.createClass
 	makeClockActive: function(clockData, e)
 	{
 		this.setState({currentActive: clockData.key});
+	},
+
+	deleteClock: function(clockData, e)
+	{
+		var clockList = this.state.clocks;
+		if(clockList.length > 1)
+		{
+			clockList.splice(clockList.indexOf(clockData), 1);
+			if(clockData.key == this.state.currentActive) this.state.currentActive = clockList[0].key;
+		}
 	},
 
 	createClock: function()
