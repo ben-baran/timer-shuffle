@@ -5,6 +5,13 @@ body
 	-webkit-user-select: none;
 }
 
+input[type=number]::-webkit-inner-spin-button, 
+input[type=number]::-webkit-outer-spin-button
+{ 
+  -webkit-appearance: none; 
+  margin: 0; 
+}
+
 .topBox
 {
 	display: flex;
@@ -33,16 +40,29 @@ body
 	height: 100%;
 }
 
-#clocks div
+#clocks div div
 {
 	display: flex;
 	align-items: center;
 	padding: 5px;
 }
 
-#clocks div *
+#clocks div div canvas,p
 {
 	margin: 5px;
+}
+
+.time
+{
+	margin: 0;
+	padding: 0;
+	width: 100px;
+}
+
+.time input
+{
+	margin: 0;
+	padding: 0;
 }
 
 #bottomGroup

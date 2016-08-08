@@ -3,6 +3,10 @@ import ReactDOM from 'react-dom';
 
 var classNames = require('classnames');
 
+$('.ui.accordion')
+  .accordion()
+;
+
 var Clock = React.createClass
 ({
 	render: function()
@@ -10,11 +14,25 @@ var Clock = React.createClass
 		var divClasses = classNames({
 			'ui segment': true,
 			'inverted': this.props.active
-		}); 
+		});
+
+		var subDivClasses = classNames({
+			'ui accordion': true,
+			'inverted': this.props.active
+		});
 		return(
 			<div className={divClasses} onClick={this.props.makeActive}>
 				<canvas className="timeChart" width="50px" height="50px" />
 				<p>{this.props.text}</p>
+				<div className={subDivClasses}>
+					<div className="title">
+						<i className="dropdown icon"></i>
+						Dropdown
+					</div>
+					<div className="content">
+						<p className="transition hidden">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+					</div>
+				</div>
 			</div>
 		);
 	},
