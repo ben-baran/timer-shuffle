@@ -1,12 +1,18 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 
+var classNames = require('classnames');
+
 var Clock = React.createClass
 ({
 	render: function()
 	{
+		var divClasses = classNames({
+			'ui segment': true,
+			'inverted': this.props.active
+		}); 
 		return(
-			<div className="ui segment">
+			<div className={divClasses} onClick={this.props.makeActive}>
 				<canvas className="timeChart" width="50px" height="50px" />
 				<p>{this.props.text}</p>
 			</div>
@@ -61,9 +67,9 @@ var Clocks = React.createClass
 ({
 	render: function()
 	{
-		var createClock = function(item)
+		var clockRender = function(item)
 		{
-			return <Clock text={item.text}/>;
+			return <Clock key={item.key} active={this.state.currentActive == item.key} text={item.text} makeActive={this.makeClockActive.bind(null, item)}/>;
 		};
 
 		return(
@@ -71,7 +77,7 @@ var Clocks = React.createClass
 				<div className="ui segment fixed sticky topBox">
 					<h1 className="ui header">Timer Shuffle {this.state.secondsToday}</h1>
 				</div>
-				<div id="clocks">{this.state.clocks.map(createClock)}</div>
+				<div id="clocks">{this.state.clocks.map(clockRender.bind(this))}</div>
 				<div id="bottomGroup" className="ui action input">
 					<input onKeyPress={this.checkEnterButton} onChange={this.onInputChange} type="text" placeholder="Add action" value={this.state.text}/>
 					<button className="ui olive icon button" id="addClock" onClick={this.createClock}>
@@ -81,10 +87,15 @@ var Clocks = React.createClass
 			</div>
 		);
 	},
+	
+	makeClockActive: function(clockData, e)
+	{
+		this.setState({currentActive: clockData.key});
+	},
 
 	createClock: function()
 	{
-		var nextClocks = this.state.clocks.concat([{text: this.state.text}]);
+		var nextClocks = this.state.clocks.concat([{text: this.state.text, key: Date.now()}]);
 		var nextText = '';
 		this.setState({clocks: nextClocks, text: nextText});
 	},
@@ -104,7 +115,8 @@ var Clocks = React.createClass
 
 	getInitialState: function()
 	{
-		return {clocks: [{text: 'Wasting Time'}], text: '', secondsToday: 0};
+		var generatedKey = Date.now();
+		return {clocks: [{text: 'Wasting Time', key: generatedKey}], text: '', secondsToday: 0, currentActive: generatedKey};
 	},
 
 	componentDidMount: function()
