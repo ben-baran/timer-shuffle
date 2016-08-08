@@ -15,24 +15,18 @@ var Clock = React.createClass
 			'ui segment': true,
 			'inverted': this.props.active
 		});
-
-		var subDivClasses = classNames({
-			'ui accordion': true,
+		
+		var buttonClasses = classNames({
+			'ui icon button clockSettingsButton': true,
 			'inverted': this.props.active
 		});
 		return(
 			<div className={divClasses} onClick={this.props.makeActive}>
 				<canvas className="timeChart" width="50px" height="50px" />
-				<p>{this.props.text}</p>
-				<div className={subDivClasses}>
-					<div className="title">
-						<i className="dropdown icon"></i>
-						Dropdown
-					</div>
-					<div className="content">
-						<p className="transition hidden">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-					</div>
-				</div>
+				<p className="clockText">00:00/30:00 <br /> {this.props.text}</p>
+				<button className={buttonClasses}>
+  					<i className="settings icon"></i>
+				</button>
 			</div>
 		);
 	},

@@ -38,31 +38,29 @@ input[type=number]::-webkit-outer-spin-button
 	padding-bottom: 50px;
 	overflow-y: scroll;
 	height: 100%;
+	padding-left: 3%;	
 }
 
-#clocks div div
+#clocks div
 {
 	display: flex;
+	width: 90%;
 	align-items: center;
-	padding: 5px;
+	justify-content: space-between;
 }
 
-#clocks div div canvas,p
+#clocks div *
 {
 	margin: 5px;
 }
 
-.time
+.clockText
 {
-	margin: 0;
-	padding: 0;
-	width: 100px;
+	text-align: center;
 }
 
-.time input
+.clockSettingsButton
 {
-	margin: 0;
-	padding: 0;
 }
 
 #bottomGroup
