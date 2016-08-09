@@ -6,10 +6,6 @@ require('electron-reload')(__dirname, {
   electron: require('electron-prebuilt')
 });
 
-devtools = require('electron-devtools-installer');
-REACT_DEVELOPER_TOOLS = devtools.REACT_DEVELOPER_TOOLS;
-devtools.default(REACT_DEVELOPER_TOOLS)
-
 let mainWindow
 
 function createWindow()
@@ -20,6 +16,10 @@ function createWindow()
 	{
 		mainWindow = new BrowserWindow({width: 1200, height: 560, frame: false, alwaysOnTop: true, resizable: true})
 		mainWindow.webContents.openDevTools()
+
+		devtools = require('electron-devtools-installer');
+		REACT_DEVELOPER_TOOLS = devtools.REACT_DEVELOPER_TOOLS;
+		devtools.default(REACT_DEVELOPER_TOOLS)
 	}
 	else
 	{
