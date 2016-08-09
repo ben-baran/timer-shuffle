@@ -131,9 +131,15 @@ var Clocks = React.createClass
 		var clockList = this.state.clocks;
 		if(clockList.length > 1)
 		{
-			clockList.splice(clockList.indexOf(clockData), 1);
-			if(clockData.key == this.state.currentActive) this.state.currentActive = clockList[0].key;
-			this.setState({clocks: clockList});
+			var clockIndex = clockList.indexOf(clockData);
+			var self = this;
+			$('#clocks div:nth-child(' + (clockIndex + 1) + ')').slideUp(200,
+				function()
+				{
+					clockList.splice(clockIndex, 1);
+					if(clockData.key == self.state.currentActive) self.state.currentActive = clockList[0].key;
+					self.setState({clocks: clockList});
+				});
 		}
 	},
 
