@@ -27,8 +27,8 @@ var Clock = React.createClass
 		});
 
 		return(
-			<div className={divClasses}>
-				<canvas className="timeChart" width="50px" height="50px" onClick={this.props.makeActive}/>
+			<div className={divClasses} onClick={this.props.makeActive}>
+				<canvas className="timeChart" width="50px" height="50px"/>
 				<p className="clockText">00:00/30:00 <br /> {this.props.text}</p>
 				<button className={buttonClasses} onClick={this.props.toggleSettings}>
   					<i className="settings icon"></i>
@@ -123,7 +123,7 @@ var Clocks = React.createClass
 	
 	makeClockActive: function(clockData, e)
 	{
-		this.setState({currentActive: clockData.key});
+		if(!e.isPropagationStopped()) this.setState({currentActive: clockData.key});
 	},
 
 	deleteClock: function(clockData, e)
@@ -139,6 +139,8 @@ var Clocks = React.createClass
 					this.setState({clocks: clockList});
 				});
 		}
+
+		e.stopPropagation();
 	},
 
 	toggleClockSettings: function(clockData, e)
@@ -148,14 +150,16 @@ var Clocks = React.createClass
 
 		if($(clockString + ' .clockSettings').first().is(':visible'))
 		{
-			$(clockString + ' *:not(.clockSettings, .clockSettings *)').delay(450).slideToggle(400);
-			$(clockString + ' .clockSettings').slideToggle(400);
+			$(clockString + ' *:not(.clockSettings, .clockSettings *)').delay(200).fadeToggle(100);
+			$(clockString + ' .clockSettings').fadeToggle(100);
 		}
 		else
 		{
-			$(clockString + ' *:not(.clockSettings, .clockSettings *)').slideToggle(400);
-			$(clockString + ' .clockSettings').delay(450).slideToggle(400);
+			$(clockString + ' *:not(.clockSettings, .clockSettings *)').fadeToggle(100);
+			$(clockString + ' .clockSettings').delay(200).fadeToggle(100);
 		}
+
+		e.stopPropagation();
 	},
 
 	createClock: function()
