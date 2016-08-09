@@ -23,7 +23,7 @@ function createWindow()
 	}
 	else
 	{
-		mainWindow = new BrowserWindow({width: 300, height: 560, frame: false, alwaysOnTop: true, resizable: false})
+		mainWindow = new BrowserWindow({width: 400, height: 560, frame: false, alwaysOnTop: true, resizable: false})
 	}
 
 	mainWindow.loadURL(`file://${__dirname}/pages/index.html`)

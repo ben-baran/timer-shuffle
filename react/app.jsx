@@ -20,15 +20,26 @@ var Clock = React.createClass
 			'ui icon button': true,
 			'inverted': this.props.active
 		});
+
+		var settingsButtonClasses = classNames({
+			'ui icon button clockSettings': true,
+			'inverted': this.props.active
+		});
+
 		return(
 			<div className={divClasses}>
 				<canvas className="timeChart" width="50px" height="50px" onClick={this.props.makeActive}/>
 				<p className="clockText">00:00/30:00 <br /> {this.props.text}</p>
-				<button className={buttonClasses}>
+				<button className={buttonClasses} onClick={this.props.toggleSettings}>
   					<i className="settings icon"></i>
 				</button>
 				<button className={buttonClasses} onClick={this.props.removeClock}>
   					<i className="delete icon"></i>
+				</button>
+
+				<p className="clockSettings">Some hidden stuff.</p>
+				<button className={settingsButtonClasses} onClick={this.props.toggleSettings}>
+  					<i className="hourglass half icon"></i>
 				</button>
 			</div>
 		);
@@ -90,6 +101,7 @@ var Clocks = React.createClass
 						text={item.text}
 						makeActive={this.makeClockActive.bind(null, item)}
 						removeClock={this.deleteClock.bind(null, item)}
+						toggleSettings={this.toggleClockSettings.bind(null, item)}
 					/>;
 		};
 
@@ -121,6 +133,24 @@ var Clocks = React.createClass
 		{
 			clockList.splice(clockList.indexOf(clockData), 1);
 			if(clockData.key == this.state.currentActive) this.state.currentActive = clockList[0].key;
+			this.setState({clocks: clockList});
+		}
+	},
+
+	toggleClockSettings: function(clockData, e)
+	{
+		var clockIndex = this.state.clocks.indexOf(clockData) + 1;
+		var clockString = '#clocks div:nth-child(' + clockIndex + ')';
+
+		if($(clockString + ' .clockSettings').first().is(':visible'))
+		{
+			$(clockString + ' *:not(.clockSettings, .clockSettings *)').delay(450).slideToggle(400);
+			$(clockString + ' .clockSettings').slideToggle(400);
+		}
+		else
+		{
+			$(clockString + ' *:not(.clockSettings, .clockSettings *)').slideToggle(400);
+			$(clockString + ' .clockSettings').delay(450).slideToggle(400);
 		}
 	},
 
@@ -159,7 +189,7 @@ var Clocks = React.createClass
 	{
 		var d = new Date();
 		var currentSeconds = Math.round(d.getMilliseconds() / 1000.0 + d.getSeconds() + d.getMinutes() * 60 + d.getHours() * 3600);
-		this.setState({secondsToday: currentSeconds});
+		//this.setState({secondsToday: currentSeconds});
 	},
 	
 	componentWillUnmount: function()
