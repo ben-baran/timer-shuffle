@@ -145,7 +145,7 @@ var Clocks = React.createClass
 		if(clockList.length > 1)
 		{
 			var clockIndex = clockList.indexOf(clockData);
-			$('#clocks div:nth-child(' + (clockIndex + 1) + ')').slideUp(200, () =>
+			$('#clocks > div:nth-child(' + (clockIndex + 1) + ')').slideUp(200, () =>
 				{
 					clockList.splice(clockIndex, 1);
 					if(clockData.key == this.state.currentActive) this.state.currentActive = clockList[0].key;
@@ -159,7 +159,7 @@ var Clocks = React.createClass
 	toggleClockSettings: function(clockData, e)
 	{
 		var clockIndex = this.state.clocks.indexOf(clockData) + 1;
-		var clockString = '#clocks div:nth-child(' + clockIndex + ')';
+		var clockString = '#clocks > div:nth-child(' + clockIndex + ')';
 
 		if($(clockString + ' .clockSettings').first().is(':visible'))
 		{
