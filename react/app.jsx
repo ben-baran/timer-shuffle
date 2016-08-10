@@ -30,11 +30,17 @@ var Clock = React.createClass
 			'ui input clockSettings': true,
 			'inverted': this.props.active
 		});
+		
+		var twoDigits = (i) => ('0' + i).slice(-2);
+		var spent = this.props.secondsSpent;
+		var spentStr = '' + twoDigits(spent % 60);
+		spent = Math.trunc(spent / 60);
+		spentStr = twoDigits(Math.trunc(spent / 60)) + ':' + twoDigits(spent % 60) + ':' + spentStr; 
 
 		return(
 			<div className={divClasses} onClick={this.props.makeActive}>
 				<canvas className="timeChart" width="70px" height="70px"/>
-				<p className="clockText">00:00/30:00 <br /> {this.props.text}</p>
+				<p className="clockText">{spentStr}/00:30:00 <br /> {this.props.text}</p>
 				<button className={buttonClasses} onClick={this.props.toggleSettings}>
   					<i className="settings icon"></i>
 				</button>
@@ -115,13 +121,14 @@ var Clocks = React.createClass
 						makeActive={this.makeClockActive.bind(null, item)}
 						removeClock={this.deleteClock.bind(null, item)}
 						toggleSettings={this.toggleClockSettings.bind(null, item)}
+						secondsSpent={Math.round(item.secondsSpent)}
 					/>;
 		};
 
 		return(
 			<div>
 				<div className="ui segment fixed sticky topBox">
-					<h1 className="ui header">Timer Shuffle {this.state.secondsToday}</h1>
+					<h1 className="ui header">Timer Shuffle</h1>
 				</div>
 				<div id="clocks">{this.state.clocks.map(clockRender.bind(this))}</div>
 				<div id="bottomGroup" className="ui action input">
@@ -133,7 +140,15 @@ var Clocks = React.createClass
 			</div>
 		);
 	},
-	
+
+	clockWithKey: function(key)
+	{
+		//better than indexOf because it doesn't rely on the time not being changed by tick and
+		//is more efficient because it doesn't check array equality
+		for(var i = 0; i < this.state.clocks.length; i++) if(this.state.clocks[i].key == key) return i;
+		return -1;
+	},
+
 	makeClockActive: function(clockData, e)
 	{
 		if(!e.isPropagationStopped()) this.setState({currentActive: clockData.key});
@@ -144,7 +159,7 @@ var Clocks = React.createClass
 		var clockList = this.state.clocks;
 		if(clockList.length > 1)
 		{
-			var clockIndex = clockList.indexOf(clockData);
+			var clockIndex = this.clockWithKey(clockData.key)
 			$('#clocks > div:nth-child(' + (clockIndex + 1) + ')').slideUp(200, () =>
 				{
 					clockList.splice(clockIndex, 1);
@@ -158,7 +173,7 @@ var Clocks = React.createClass
 
 	toggleClockSettings: function(clockData, e)
 	{
-		var clockIndex = this.state.clocks.indexOf(clockData) + 1;
+		var clockIndex = this.clockWithKey(clockData.key) + 1;
 		var clockString = '#clocks > div:nth-child(' + clockIndex + ')';
 
 		if($(clockString + ' .clockSettings').first().is(':visible'))
@@ -177,7 +192,7 @@ var Clocks = React.createClass
 
 	createClock: function()
 	{
-		var nextClocks = this.state.clocks.concat([{text: this.state.text, key: Date.now()}]);
+		var nextClocks = this.state.clocks.concat([{text: this.state.text, key: Date.now(), secondsSpent: 0}]);
 		var nextText = '';
 		this.setState({clocks: nextClocks, text: nextText});
 	},
@@ -197,20 +212,22 @@ var Clocks = React.createClass
 
 	getInitialState: function()
 	{
-		var generatedKey = Date.now();
-		return {clocks: [{text: 'Wasting Time', key: generatedKey}], text: '', secondsToday: 0, currentActive: generatedKey};
+		var d = new Date();
+		var currentSeconds = d.getMilliseconds() / 1000.0 + d.getSeconds() + d.getMinutes() * 60 + d.getHours() * 3600;
+		return {clocks: [{text: 'Wasting Time', key: d, secondsSpent: 0.0}], text: '', secondsToday: currentSeconds, currentActive: d};
 	},
 
 	componentDidMount: function()
 	{
-		this.masterInterval = setInterval(this.tick, 10);
+		this.masterInterval = setInterval(this.tick, 1000);
 	},
 
 	tick: function()
 	{
 		var d = new Date();
-		var currentSeconds = Math.round(d.getMilliseconds() / 1000.0 + d.getSeconds() + d.getMinutes() * 60 + d.getHours() * 3600);
-		//this.setState({secondsToday: currentSeconds});
+		var currentSeconds = d.getMilliseconds() / 1000.0 + d.getSeconds() + d.getMinutes() * 60 + d.getHours() * 3600;
+		this.state.clocks[this.clockWithKey(this.state.currentActive)].secondsSpent += currentSeconds - this.state.secondsToday;
+		this.setState({clocks: this.state.clocks, secondsToday: currentSeconds});
 	},
 	
 	componentWillUnmount: function()
