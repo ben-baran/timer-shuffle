@@ -26,9 +26,14 @@ var Clock = React.createClass
 			'inverted': this.props.active
 		});
 
+		var settingsInputClasses = classNames({
+			'ui input clockSettings': true,
+			'inverted': this.props.active
+		});
+
 		return(
 			<div className={divClasses} onClick={this.props.makeActive}>
-				<canvas className="timeChart" width="50px" height="50px"/>
+				<canvas className="timeChart" width="70px" height="70px"/>
 				<p className="clockText">00:00/30:00 <br /> {this.props.text}</p>
 				<button className={buttonClasses} onClick={this.props.toggleSettings}>
   					<i className="settings icon"></i>
@@ -36,8 +41,16 @@ var Clock = React.createClass
 				<button className={buttonClasses} onClick={this.props.removeClock}>
   					<i className="delete icon"></i>
 				</button>
-
-				<p className="clockSettings">Some hidden stuff.</p>
+				
+				<div className={settingsInputClasses}>
+					<input type="number" placeholder="hrs" />
+				</div>
+				<div className={settingsInputClasses}>
+					<input type="number" placeholder="min" />
+				</div>
+				<div className={settingsInputClasses}>
+					<input type="number" placeholder="sec" />
+				</div>
 				<button className={settingsButtonClasses} onClick={this.props.toggleSettings}>
   					<i className="hourglass half icon"></i>
 				</button>

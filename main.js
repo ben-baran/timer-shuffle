@@ -14,7 +14,8 @@ function createWindow()
 
 	if(process.argv.indexOf('--dev') >= 0)
 	{
-		mainWindow = new BrowserWindow({width: 1200, height: 560, frame: false, alwaysOnTop: true, resizable: true})
+		mainWindow = new BrowserWindow({frame: false, alwaysOnTop: true, resizable: true})
+		mainWindow.maximize();
 		mainWindow.webContents.openDevTools()
 
 		devtools = require('electron-devtools-installer');

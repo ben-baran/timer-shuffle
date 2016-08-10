@@ -40,7 +40,7 @@ input[type=number]::-webkit-outer-spin-button
 	height: 100%;
 }
 
-#clocks div
+#clocks > div
 {
 	display: flex;
 	width: 90%;
@@ -48,11 +48,17 @@ input[type=number]::-webkit-outer-spin-button
 	justify-content: space-between;
 	margin-left: 5%;
 	height: 88px;
+	overflow: hidden;
 }
 
-#clocks div *
+#clocks div *:not(canvas)
 {
-	margin: 5px;
+	margin: 3px
+}
+
+#clocks p
+{
+	flex-grow: 2;
 }
 
 .clockText
@@ -63,6 +69,11 @@ input[type=number]::-webkit-outer-spin-button
 #clocks * .clockSettings
 {
 	display: none;
+}
+
+#clocks .input.clockSettings
+{
+	width: 75px;
 }
 
 #bottomGroup
