@@ -32,15 +32,19 @@ var Clock = React.createClass
 		});
 		
 		var twoDigits = (i) => ('0' + i).slice(-2);
-		var spent = this.props.secondsSpent;
-		var spentStr = '' + twoDigits(spent % 60);
-		spent = Math.trunc(spent / 60);
-		spentStr = twoDigits(Math.trunc(spent / 60)) + ':' + twoDigits(spent % 60) + ':' + spentStr; 
+		var timeString = (t) => {
+			var ret = '' + twoDigits(t % 60);
+			t = Math.trunc(t / 60);
+			ret = twoDigits(Math.trunc(t / 60)) + ':' + twoDigits(t % 60) + ':' + ret;
+			return ret;
+		};
+		var spentStr = timeString(this.props.secondsSpent);
+		var limitStr = timeString(this.props.secondsLimit);
 
 		return(
 			<div className={divClasses} onClick={this.props.makeActive}>
 				<canvas className="timeChart" width="70px" height="70px"/>
-				<p className="clockText">{spentStr}/00:30:00 <br /> {this.props.text}</p>
+				<p className="clockText">{spentStr}/{limitStr} <br /> {this.props.text}</p>
 				<button className={buttonClasses} onClick={this.props.toggleSettings}>
   					<i className="settings icon"></i>
 				</button>
@@ -122,6 +126,7 @@ var Clocks = React.createClass
 						removeClock={this.deleteClock.bind(null, item)}
 						toggleSettings={this.toggleClockSettings.bind(null, item)}
 						secondsSpent={Math.round(item.secondsSpent)}
+						secondsLimit={Math.round(item.secondsLimit)}
 					/>;
 		};
 
@@ -205,7 +210,11 @@ var Clocks = React.createClass
 
 	createClock: function()
 	{
-		var nextClocks = this.state.clocks.concat([{text: this.state.text, key: Date.now(), secondsSpent: 0, settingsOpen: false}]);
+		var nextClocks = this.state.clocks.concat([{text: this.state.text,
+													key: Date.now(),
+													secondsSpent: 0,
+													secondsLimit: this.state.hoursInput * 3600 + this.state.minutesInput * 60 + this.state.secondsInput,
+													settingsOpen: false}]);
 		var nextText = '';
 		this.setState({clocks: nextClocks, text: nextText});
 	},
@@ -248,7 +257,7 @@ var Clocks = React.createClass
 	{
 		var d = new Date();
 		var currentSeconds = d.getMilliseconds() / 1000.0 + d.getSeconds() + d.getMinutes() * 60 + d.getHours() * 3600;
-		return {clocks: [{text: 'Wasting Time', key: d, secondsSpent: 0.0, settingsOpen: false}], text: '',
+		return {clocks: [{text: 'Wasting Time', key: d, secondsSpent: 0.0, secondsLimit: 0.0, settingsOpen: false}], text: '',
 				secondsInput: '', minutesInput: 30, hoursInput: '', secondsToday: currentSeconds, currentActive: d};
 	},
 
