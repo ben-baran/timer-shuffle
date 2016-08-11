@@ -83,3 +83,13 @@ input[type=number]::-webkit-outer-spin-button
 	left: 0;
 	width: 100%;
 }
+
+#bottomGroup .input
+{
+	width: 15%;
+}
+
+#bottomGroup .input input
+{
+	text-align: center;
+}

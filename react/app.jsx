@@ -132,6 +132,15 @@ var Clocks = React.createClass
 				</div>
 				<div id="clocks">{this.state.clocks.map(clockRender.bind(this))}</div>
 				<div id="bottomGroup" className="ui action input">
+					<div className="ui input">
+						<input type="number" min="0" max="23" placeholder="hrs" onChange={this.onInputHoursChange} value={this.state.hoursInput}/>
+					</div>
+					<div className="ui input">
+						<input type="number" min="0" max="59" placeholder="min" onChange={this.onInputMinutesChange} value={this.state.minutesInput}/>
+					</div>
+					<div className="ui input">
+						<input type="number" min="0" max="59" placeholder="sec" onChange={this.onInputSecondsChange} value={this.state.secondsInput}/>
+					</div>
 					<input onKeyPress={this.checkEnterButton} onChange={this.onInputChange} type="text" placeholder="Add action" value={this.state.text}/>
 					<button className="ui olive icon button" id="addClock" onClick={this.createClock}>
 						<i className="plus icon" />
@@ -210,11 +219,33 @@ var Clocks = React.createClass
 		this.setState({text: e.target.value});
 	},
 
+	onInputHoursChange: function(e)
+	{
+		var hours = Math.max(Math.min(e.target.value, 23), 0);
+		if(hours == 0) this.setState({hoursInput: ''});
+		else this.setState({hoursInput: hours});
+	},
+
+	onInputMinutesChange: function(e)
+	{
+		var minutes = Math.max(Math.min(e.target.value, 59), 0);
+		if(minutes == 0) this.setState({minutesInput: ''});
+		else this.setState({minutesInput: minutes});
+	},
+
+	onInputSecondsChange: function(e)
+	{
+		var seconds = Math.max(Math.min(e.target.value, 59), 0);
+		if(seconds == 0) this.setState({secondsInput: ''});
+		else this.setState({secondsInput: seconds});
+	},
+
 	getInitialState: function()
 	{
 		var d = new Date();
 		var currentSeconds = d.getMilliseconds() / 1000.0 + d.getSeconds() + d.getMinutes() * 60 + d.getHours() * 3600;
-		return {clocks: [{text: 'Wasting Time', key: d, secondsSpent: 0.0}], text: '', secondsToday: currentSeconds, currentActive: d};
+		return {clocks: [{text: 'Wasting Time', key: d, secondsSpent: 0.0}], text: '',
+				secondsInput: '', minutesInput: 30, hoursInput: '', secondsToday: currentSeconds, currentActive: d};
 	},
 
 	componentDidMount: function()
