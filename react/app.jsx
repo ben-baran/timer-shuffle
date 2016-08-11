@@ -3,14 +3,31 @@ import ReactDOM from 'react-dom';
 
 var classNames = require('classnames');
 
-$('.ui.accordion')
-  .accordion()
-;
-
 var Clock = React.createClass
 ({
 	render: function()
 	{
+		if('timeChart' in this.state)
+		{
+			var dataset = this.state.timeChart.data.datasets[0];
+			if(this.props.secondsLimit >= this.props.secondsSpent)
+			{
+				dataset.data[0] = this.props.secondsSpent;
+				dataset.data[1] = this.props.secondsLimit - this.props.secondsSpent;
+				dataset.backgroundColor[0] = '#AEFF6E'
+				dataset.backgroundColor[1] = '#000000'
+
+			}
+			else
+			{
+				dataset.data[0] = this.props.secondsSpent - this.props.secondsLimit;
+				dataset.data[1] = this.props.secondsLimit;
+				dataset.backgroundColor[0] = '#994136'
+				dataset.backgroundColor[1] = '#AEFF6E'
+			}
+			this.state.timeChart.update();
+		}
+
 		var divClasses = classNames({
 			'ui segment': true,
 			'inverted': this.props.active
@@ -68,10 +85,15 @@ var Clock = React.createClass
 		);
 	},
 
+	getInitialState: function()
+	{
+		return {};
+	},
+
 	componentDidMount: function()
 	{
 		var ctx = $('#clocks').children().last().children().first();
-		var newChart = new Chart(ctx,
+		var createdChart = new Chart(ctx,
 		{
 			type: 'doughnut',
 			data:
@@ -80,15 +102,10 @@ var Clock = React.createClass
 				datasets:
 				[
 					{
-						data: [300, 500],
+						data: [this.props.secondsSpent, this.props.secondsLimit],
 						backgroundColor:
 						[
-							"#FF6384",
-							"#000000"
-						],
-						hoverBackgroundColor:
-						[
-							"#52EE84",
+							"#AEFF6E",
 							"#000000"
 						]
 					}
@@ -107,7 +124,8 @@ var Clock = React.createClass
 				responsive: false
 			}
 		});
-		
+
+		this.setState({timeChart: createdChart});
 		$('#clocks').stop().animate({scrollTop: $('#clocks')[0].scrollHeight}, 500);
 	}
 });
@@ -257,7 +275,7 @@ var Clocks = React.createClass
 	{
 		var d = new Date();
 		var currentSeconds = d.getMilliseconds() / 1000.0 + d.getSeconds() + d.getMinutes() * 60 + d.getHours() * 3600;
-		return {clocks: [{text: 'Wasting Time', key: d, secondsSpent: 0.0, secondsLimit: 0.0, settingsOpen: false}], text: '',
+		return {clocks: [{text: 'Wasting Time', key: d, secondsSpent: 0.0, secondsLimit: 86399, settingsOpen: false}], text: '',
 				secondsInput: '', minutesInput: 30, hoursInput: '', secondsToday: currentSeconds, currentActive: d};
 	},
 
