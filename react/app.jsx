@@ -160,7 +160,7 @@ var Clocks = React.createClass
 
 	makeClockActive: function(clockData, e)
 	{
-		if(!e.isPropagationStopped()) this.setState({currentActive: clockData.key});
+		if(!e.isPropagationStopped() && !this.state.clocks[this.clockWithKey(clockData.key)].settingsOpen) this.setState({currentActive: clockData.key});
 	},
 
 	deleteClock: function(clockData, e)
@@ -182,8 +182,8 @@ var Clocks = React.createClass
 
 	toggleClockSettings: function(clockData, e)
 	{
-		var clockIndex = this.clockWithKey(clockData.key) + 1;
-		var clockString = '#clocks > div:nth-child(' + clockIndex + ')';
+		var clockIndex = this.clockWithKey(clockData.key) ;
+		var clockString = '#clocks > div:nth-child(' + (clockIndex + 1) + ')';
 
 		if($(clockString + ' .clockSettings').first().is(':visible'))
 		{
@@ -195,13 +195,17 @@ var Clocks = React.createClass
 			$(clockString + ' *:not(.clockSettings, .clockSettings *)').fadeToggle(100);
 			$(clockString + ' .clockSettings').delay(200).fadeToggle(100);
 		}
+		
+		var clockList = this.state.clocks;
+		clockList[clockIndex].settingsOpen = !clockList[clockIndex].settingsOpen;
+		this.setState({clocks: clockList});
 
 		e.stopPropagation();
 	},
 
 	createClock: function()
 	{
-		var nextClocks = this.state.clocks.concat([{text: this.state.text, key: Date.now(), secondsSpent: 0}]);
+		var nextClocks = this.state.clocks.concat([{text: this.state.text, key: Date.now(), secondsSpent: 0, settingsOpen: false}]);
 		var nextText = '';
 		this.setState({clocks: nextClocks, text: nextText});
 	},
@@ -244,7 +248,7 @@ var Clocks = React.createClass
 	{
 		var d = new Date();
 		var currentSeconds = d.getMilliseconds() / 1000.0 + d.getSeconds() + d.getMinutes() * 60 + d.getHours() * 3600;
-		return {clocks: [{text: 'Wasting Time', key: d, secondsSpent: 0.0}], text: '',
+		return {clocks: [{text: 'Wasting Time', key: d, secondsSpent: 0.0, settingsOpen: false}], text: '',
 				secondsInput: '', minutesInput: 30, hoursInput: '', secondsToday: currentSeconds, currentActive: d};
 	},
 
