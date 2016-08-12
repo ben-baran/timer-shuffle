@@ -15,7 +15,7 @@ var Clock = React.createClass
 				dataset.data[0] = this.props.secondsSpent;
 				dataset.data[1] = this.props.secondsLimit - this.props.secondsSpent;
 				dataset.backgroundColor[0] = '#AEFF6E'
-				dataset.backgroundColor[1] = '#000000'
+				dataset.backgroundColor[1] = '#FFFFFF'
 
 			}
 			else
@@ -103,11 +103,9 @@ var Clock = React.createClass
 				[
 					{
 						data: [this.props.secondsSpent, this.props.secondsLimit],
-						backgroundColor:
-						[
-							"#AEFF6E",
-							"#000000"
-						]
+						backgroundColor: ["#AEFF6E", "#FFFFFF"],
+						borderColor: ['#000000', '#000000'],
+						borderWidth: ['10px', '10px'],
 					}
 				]
 			},
