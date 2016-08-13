@@ -70,13 +70,13 @@ var Clock = React.createClass
 				</button>
 				
 				<div className={settingsInputClasses}>
-					<input type="number" placeholder="hrs" />
+					<input type="number" placeholder="hrs" value={parseInt(limitStr.substring(0, 2))} onChange={this.props.onClockHoursChange}/>
 				</div>
 				<div className={settingsInputClasses}>
-					<input type="number" placeholder="min" />
+					<input type="number" placeholder="min" value={parseInt(limitStr.substring(3, 5))} onChange={this.props.onClockMinutesChange}/>
 				</div>
 				<div className={settingsInputClasses}>
-					<input type="number" placeholder="sec" />
+					<input type="number" placeholder="sec" value={parseInt(limitStr.substring(6, 8))} onChange={this.props.onClockSecondsChange}/>
 				</div>
 				<button className={settingsButtonClasses} onClick={this.props.toggleSettings}>
   					<i className="hourglass half icon"></i>
@@ -141,6 +141,9 @@ var Clocks = React.createClass
 						makeActive={this.makeClockActive.bind(null, item)}
 						removeClock={this.deleteClock.bind(null, item)}
 						toggleSettings={this.toggleClockSettings.bind(null, item)}
+						onClockHoursChange={this.onClockHoursChange.bind(null, item)}
+						onClockMinutesChange={this.onClockMinutesChange.bind(null, item)}
+						onClockSecondsChange={this.onClockSecondsChange.bind(null, item)}
 						secondsSpent={Math.round(item.secondsSpent)}
 						secondsLimit={Math.round(item.secondsLimit)}
 					/>;
@@ -189,7 +192,7 @@ var Clocks = React.createClass
 		var clockList = this.state.clocks;
 		if(clockList.length > 1)
 		{
-			var clockIndex = this.clockWithKey(clockData.key)
+			var clockIndex = this.clockWithKey(clockData.key);
 			$('#clocks > div:nth-child(' + (clockIndex + 1) + ')').slideUp(200, () =>
 				{
 					clockList.splice(clockIndex, 1);
@@ -269,11 +272,51 @@ var Clocks = React.createClass
 		else this.setState({secondsInput: seconds});
 	},
 
+	onClockHoursChange: function(clockData, e)
+	{
+		var clockIndex = this.clockWithKey(clockData.key);
+		var hours = Math.max(Math.min(e.target.value, 23), 0);
+		var clockList = this.state.clocks;
+		var previousLimit = clockList[clockIndex].secondsLimit;
+		clockList[clockIndex].secondsLimit = hours * 3600 + previousLimit % 3600;
+		this.setState({clocks: clockList});
+	},
+
+	onClockHoursChange: function(clockData, e)
+	{
+		var clockIndex = this.clockWithKey(clockData.key);
+		var hours = Math.max(Math.min(e.target.value, 23), 0);
+		var clockList = this.state.clocks;
+		var previousLimit = clockList[clockIndex].secondsLimit;
+		clockList[clockIndex].secondsLimit = hours * 3600 + previousLimit % 3600;
+		this.setState({clocks: clockList});
+	},
+
+	onClockMinutesChange: function(clockData, e)
+	{
+		var clockIndex = this.clockWithKey(clockData.key);
+		var minutes = Math.max(Math.min(e.target.value, 59), 0);
+		var clockList = this.state.clocks;
+		var previousLimit = clockList[clockIndex].secondsLimit;
+		clockList[clockIndex].secondsLimit = Math.trunc(previousLimit / 3600) * 3600 + minutes * 60 + previousLimit % 60;
+		this.setState({clocks: clockList});
+	},
+
+	onClockSecondsChange: function(clockData, e)
+	{
+		var clockIndex = this.clockWithKey(clockData.key);
+		var seconds = Math.max(Math.min(e.target.value, 59), 0);
+		var clockList = this.state.clocks;
+		var previousLimit = clockList[clockIndex].secondsLimit;
+		clockList[clockIndex].secondsLimit = Math.trunc(previousLimit / 60) * 60 + seconds; 
+		this.setState({clocks: clockList});
+	},
+
 	getInitialState: function()
 	{
 		var d = new Date();
 		var currentSeconds = d.getMilliseconds() / 1000.0 + d.getSeconds() + d.getMinutes() * 60 + d.getHours() * 3600;
-		return {clocks: [{text: 'Wasting Time', key: d, secondsSpent: 0.0, secondsLimit: 86399, settingsOpen: false}], text: '',
+		return {clocks: [{text: 'Wasting Time', key: d, secondsSpent: 0.0, secondsLimit: 86400, settingsOpen: false}], text: '',
 				secondsInput: '', minutesInput: 30, hoursInput: '', secondsToday: currentSeconds, currentActive: d};
 	},
 
