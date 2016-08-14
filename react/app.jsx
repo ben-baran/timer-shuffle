@@ -3,6 +3,19 @@ import ReactDOM from 'react-dom';
 
 var classNames = require('classnames');
 
+var pathExists = (path) =>
+{
+	try
+	{
+		fs.statSync(path);
+		return true;
+	}
+	catch(err)
+	{
+		return false;
+	}
+};
+
 var Clock = React.createClass
 ({
 	render: function()
@@ -282,16 +295,6 @@ var Clocks = React.createClass
 		this.setState({clocks: clockList});
 	},
 
-	onClockHoursChange: function(clockData, e)
-	{
-		var clockIndex = this.clockWithKey(clockData.key);
-		var hours = Math.max(Math.min(e.target.value, 23), 0);
-		var clockList = this.state.clocks;
-		var previousLimit = clockList[clockIndex].secondsLimit;
-		clockList[clockIndex].secondsLimit = hours * 3600 + previousLimit % 3600;
-		this.setState({clocks: clockList});
-	},
-
 	onClockMinutesChange: function(clockData, e)
 	{
 		var clockIndex = this.clockWithKey(clockData.key);
@@ -314,6 +317,11 @@ var Clocks = React.createClass
 
 	getInitialState: function()
 	{
+		if(pathExists('./data/clocks.json'))
+		{
+			return JSON.parse(fs.readFileSync('./data/clocks.json', 'utf-8'));
+		}
+
 		var d = new Date();
 		var currentSeconds = d.getMilliseconds() / 1000.0 + d.getSeconds() + d.getMinutes() * 60 + d.getHours() * 3600;
 		return {clocks: [{text: 'Wasting Time', key: d, secondsSpent: 0.0, secondsLimit: 86400, settingsOpen: false}], text: '',
@@ -322,7 +330,10 @@ var Clocks = React.createClass
 
 	componentDidMount: function()
 	{
-		this.masterInterval = setInterval(this.tick, 1000);
+		window.addEventListener('beforeunload', (e) => {
+			this.saveData();
+		});
+		this.masterInterval = setInterval(this.tick, 5000);
 	},
 
 	tick: function()
@@ -336,6 +347,15 @@ var Clocks = React.createClass
 	componentWillUnmount: function()
 	{
 		clearInterval(this.masterInterval);
+	},
+
+	saveData: function()
+	{
+		if(!pathExists('./data'))
+		{
+			fs.mkdirSync('./data');
+		}
+		fs.writeFileSync('./data/clocks.json', JSON.stringify(this.state), 'utf-8');
 	}
 });
 
