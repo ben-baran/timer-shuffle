@@ -72,7 +72,7 @@ var Clock = React.createClass
 		var limitStr = timeString(this.props.secondsLimit);
 
 		return(
-			<div className={divClasses} onClick={this.props.makeActive}>
+			<div id={this.props.text.replace(/ /g, '') + 'Div'} className={divClasses} onClick={this.props.makeActive}>
 				<canvas className="timeChart" width="70px" height="70px"/>
 				<p className="clockText">{spentStr}/{limitStr} <br /> {this.props.text}</p>
 				<button className={buttonClasses} onClick={this.props.toggleSettings}>
@@ -105,7 +105,7 @@ var Clock = React.createClass
 
 	componentDidMount: function()
 	{
-		var ctx = $('#clocks').children().last().children().first();
+		var ctx = $('#' + this.props.text.replace(/ /g, '') + 'Div').children().first();
 		var createdChart = new Chart(ctx,
 		{
 			type: 'doughnut',
@@ -324,8 +324,8 @@ var Clocks = React.createClass
 
 		var d = new Date();
 		var currentSeconds = d.getMilliseconds() / 1000.0 + d.getSeconds() + d.getMinutes() * 60 + d.getHours() * 3600;
-		return {clocks: [{text: 'Wasting Time', key: d, secondsSpent: 0.0, secondsLimit: 86400, settingsOpen: false}], text: '',
-				secondsInput: '', minutesInput: 30, hoursInput: '', secondsToday: currentSeconds, currentActive: d};
+		return {clocks: [{text: 'Wasting Time', key: Date.now(), secondsSpent: 0.0, secondsLimit: 86400, settingsOpen: false}], text: '',
+				secondsInput: '', minutesInput: 30, hoursInput: '', secondsToday: currentSeconds, currentActive: Date.now()};
 	},
 
 	componentDidMount: function()
@@ -333,7 +333,7 @@ var Clocks = React.createClass
 		window.addEventListener('beforeunload', (e) => {
 			this.saveData();
 		});
-		this.masterInterval = setInterval(this.tick, 5000);
+		this.masterInterval = setInterval(this.tick, 1000);
 	},
 
 	tick: function()
